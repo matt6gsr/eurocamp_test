@@ -1,101 +1,96 @@
-import Image from "next/image";
+"use client";
+
+import React, { useEffect, useState } from "react";
+import { Booking, columns as bookingColumns } from "./bookings/columns";
+import { Parc, columns as parcColumns } from "./parcs/columns";
+import { User, columns as userColumns } from "./users/columns";
+import { DataTable } from "../components/ui/data-table";
+
+async function getBookings(): Promise<Booking[]> {
+  return [
+    {
+      id: "12345",
+      user: "abcde",
+      parc: "67890",
+      bookingdate: "01-01-2030",
+      comments: "This is a comment",
+    },
+    {
+      id: " 54321",
+      user: "edcba",
+      parc: "09876",
+      bookingdate: "01-01-2030",
+      comments: "This is another comment",
+    },
+  ];
+}
+
+async function getParcs(): Promise<Parc[]> {
+  return [
+    {
+      id: "12345",
+      name: "Parc 1",
+      description: "This is a description",
+    },
+    {
+      id: "54321",
+      name: "Parc 2",
+      description: "This is another description",
+    },
+  ];
+}
+
+async function getUsers(): Promise<User[]> {
+  return [
+    {
+      id: "12345",
+      name: "User 1",
+      email: "user1@eurocamp.com",
+    },
+    {
+      id: "54321",
+      name: "User 2",
+      email: "user2@eurocamp.com",
+    },
+  ];
+}
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const [bookingData, setBookingData] = useState<Booking[]>([]);
+  const [parcData, setParcData] = useState<Parc[]>([]);
+  const [userData, setUserData] = useState<User[]>([]);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  useEffect(() => {
+    async function fetchData() {
+      const bookings = await getBookings();
+      const parcs = await getParcs();
+      const users = await getUsers();
+      setBookingData(bookings);
+      setParcData(parcs);
+      setUserData(users);
+    }
+    fetchData();
+  }, []);
+  return (
+    <div className="bg-slate-50 ">
+      <section>
+        <div className="container mx-auto py-10">
+          <h1>Bookings</h1>
+          <DataTable columns={bookingColumns} data={bookingData} />
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      </section>
+      <section>
+        <div className="container mx-auto py-10">
+          <h1>Parcs</h1>
+          <DataTable columns={parcColumns} data={parcData} />
+        </div>
+      </section>
+      <section>
+        <div className="container mx-auto py-10">
+          <h1>Users</h1>
+          <DataTable columns={userColumns} data={userData} />
+        </div>
+      </section>
     </div>
   );
 }
