@@ -5,6 +5,7 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
+import "whatwg-fetch";
 import Home from "../page";
 
 jest.mock("../page", () => {
